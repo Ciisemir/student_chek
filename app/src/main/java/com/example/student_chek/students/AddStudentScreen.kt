@@ -98,7 +98,7 @@ fun AddStudentScreen(
 
             Spacer(modifier = Modifier.height(12.dp))
             RoundedTextField(value = name, onValueChange = { name = it }, label = "Enter name")
-            RoundedTextField(value = domain, onValueChange = { domain = it }, label = "Enter domain")
+            RoundedTextField(value = domain, onValueChange = { domain = it }, label = "Enter fucult")
             RoundedTextField(
                 value = mobile,
                 onValueChange = { mobile = it },

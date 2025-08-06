@@ -65,7 +65,7 @@ fun AddBatchScreen(
                 value = studentCount,
                 onValueChange = { studentCount = it },
                 label = "Enter number of students",
-                keyboardType = KeyboardType.Number
+                keyboardType = KeyboardType.Phone
             )
 
             Text("Batch Lead Details", fontSize = 18.sp)
@@ -101,7 +101,8 @@ fun AddBatchScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1BB6B6))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1BB6B6
+                ,))
             ) {
                 Text("Save")
             }

@@ -106,7 +106,7 @@ fun StudentDetailsScreen(
             Spacer(modifier = Modifier.height(16.dp))
             DetailItem("Name", student.name)
             Spacer(modifier = Modifier.height(16.dp))
-            DetailItem("Domain", student.domain)
+            DetailItem("facult", student.domain)
             Spacer(modifier = Modifier.height(16.dp))
             DetailItem("Mobile", student.mobile)
             Spacer(modifier = Modifier.height(16.dp))

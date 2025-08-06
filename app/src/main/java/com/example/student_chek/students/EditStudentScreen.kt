@@ -111,7 +111,7 @@ fun EditStudentScreen(
             OutlinedTextField(
                 value = domain,
                 onValueChange = { domain = it },
-                label = { Text("Domain") },
+                label = { Text("facult") },
                 modifier = Modifier.fillMaxWidth()
             )
             OutlinedTextField(

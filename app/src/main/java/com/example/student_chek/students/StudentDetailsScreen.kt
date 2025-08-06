@@ -10,10 +10,8 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,7 +22,15 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.layout.ContentScale
 
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.unit.sp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -43,39 +49,73 @@ fun StudentDetailsScreen(
         return
     }
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Student Details") },
-                actions = {
-                    IconButton(onClick = {
-                        navController.navigate("edit_student/$batchIndex/$studentIndex")
-                    }) {
-                        Icon(Icons.Default.Edit, contentDescription = "Edit", tint = Color(0xFF00BFA6))
-                    }
-                    IconButton(onClick = {
-                        showDeleteDialog = true
-                    }) {
-                        Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color.Red)
-                    }
-                }
-            )
-        }
-    ) { padding ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Background (optional)
+        Image(
+            painter = painterResource(id = R.drawable.kor),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Bottom-right image
+        Image(
+            painter = painterResource(id = R.drawable.attendance),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(100.dp)
+
+        )
+
         Column(
             modifier = Modifier
-                .padding(padding)
-                .padding(24.dp),
-            verticalArrangement = Arrangement.spacedBy(16.dp)
+                .fillMaxSize()
+                .padding(horizontal = 32.dp, vertical = 24.dp),
+            verticalArrangement = Arrangement.Top
         ) {
-            Text("Batch name: $batchName", fontWeight = FontWeight.Bold)
-            Text("Name: ${student.name}")
-            Text("Domain: ${student.domain}")
-            Text("Mobile: ${student.mobile}")
-            Text("Email: ${student.email}")
-            Text("Gender: ${student.gender}")
+            // Edit + Delete buttons (top right)
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.End
+            ) {
+                IconButton(onClick = {
+                    navController.navigate("edit_student/$batchIndex/$studentIndex")
+                }) {
+                    Icon(Icons.Default.Edit, contentDescription = "Edit", tint = Color(0xFF1BB6B6))
+                }
+                IconButton(onClick = {
+                    showDeleteDialog = true
+                }) {
+                    Icon(Icons.Default.Delete, contentDescription = "Delete", tint = Color(0xFF1BB6B6))
+                }
+            }
+
+            // Title
+            Text(
+                text = "Student Details",
+                fontWeight = FontWeight.Bold,
+                fontSize = 20.sp,
+                modifier = Modifier
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 16.dp)
+            )
+
+            // Details list
+            DetailItem("Batch name", batchName)
+            Spacer(modifier = Modifier.height(16.dp))
+            DetailItem("Name", student.name)
+            Spacer(modifier = Modifier.height(16.dp))
+            DetailItem("Domain", student.domain)
+            Spacer(modifier = Modifier.height(16.dp))
+            DetailItem("Mobile", student.mobile)
+            Spacer(modifier = Modifier.height(16.dp))
+            DetailItem("Email id", student.email)
+            Spacer(modifier = Modifier.height(16.dp))
+            DetailItem("Gender", student.gender)
         }
 
+        // Delete confirmation dialog
         if (showDeleteDialog) {
             AlertDialog(
                 onDismissRequest = { showDeleteDialog = false },
@@ -98,3 +138,22 @@ fun StudentDetailsScreen(
         }
     }
 }
+
+@Composable
+fun DetailItem(label: String, value: String) {
+    Row(modifier = Modifier.fillMaxWidth()) {
+        Text(
+            text = "$label : ",
+            fontWeight = FontWeight.Normal,
+            fontSize = 16.sp,
+            modifier = Modifier.weight(1f)
+        )
+        Text(
+            text = value,
+            fontWeight = FontWeight.Bold,
+            fontSize = 18.sp,
+            modifier = Modifier.weight(1f)
+        )
+    }
+}
+

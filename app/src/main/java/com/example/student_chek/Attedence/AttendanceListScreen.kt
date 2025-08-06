@@ -27,6 +27,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.compose.foundation.Image
+
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.icons.filled.Search
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,48 +46,96 @@ fun AttendanceListScreen(
     showPresent: Boolean,
     batchViewModel: BatchViewModel = viewModel()
 ) {
-    val students = batchViewModel.getAttendanceList(batchIndex, date, present = showPresent)
+    val allStudents = batchViewModel.getAttendanceList(batchIndex, date, present = showPresent)
+    var searchQuery by remember { mutableStateOf("") }
+
+    val filteredStudents = allStudents.filter {
+        it.name.contains(searchQuery, ignoreCase = true)
+    }
 
     val title = if (showPresent) "Present Students" else "Absentees"
     val backgroundColor = if (showPresent) Color(0xFFD0F8CE) else Color(0xFFFFCDD2)
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text(title) },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Background image
+        Image(
+            painter = painterResource(id = R.drawable.kor),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Attendance icon bottom-right
+        Image(
+            painter = painterResource(id = R.drawable.attendance),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(100.dp)
+        )
+
+        // Main content
         Column(
             modifier = Modifier
-                .padding(paddingValues)
                 .fillMaxSize()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(horizontal = 24.dp, vertical = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text(date, fontSize = 16.sp, fontWeight = FontWeight.SemiBold)
-
-            students.forEachIndexed { index, student ->
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .background(backgroundColor, shape = RoundedCornerShape(8.dp))
-                        .padding(12.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text("${(index + 1).toString().padStart(2, '0')}. ${student.name}")
-                    Text(if (showPresent) "P" else "A", fontWeight = FontWeight.Bold)
-                }
+            // Back button
+            IconButton(onClick = { navController.popBackStack() }) {
+                Icon(Icons.Default.ArrowBack, contentDescription = "Back", tint = Color.Black)
             }
 
-            if (students.isEmpty()) {
+            // Search field
+            OutlinedTextField(
+                value = searchQuery,
+                onValueChange = { searchQuery = it },
+                placeholder = { Text("Search...") },
+                leadingIcon = {
+                    Icon(Icons.Default.Search, contentDescription = "Search")
+                },
+                modifier = Modifier.fillMaxWidth()
+                    .padding(start = 100.dp),
+                shape = RoundedCornerShape(50),
+                colors = OutlinedTextFieldDefaults.colors(
+                    focusedBorderColor = Color.Transparent,
+                    unfocusedBorderColor = Color.Transparent,
+                    focusedContainerColor = Color.White,
+                    unfocusedContainerColor = Color.LightGray
+                )
+            )
+
+            // Title
+            Text(
+                text = title,
+                fontSize = 20.sp,
+                fontWeight = FontWeight.Bold
+            )
+
+            // Date
+            Text(date, fontSize = 14.sp, fontWeight = FontWeight.SemiBold)
+
+            // Student list
+            if (filteredStudents.isNotEmpty()) {
+                filteredStudents.forEachIndexed { index, student ->
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .background(backgroundColor, shape = RoundedCornerShape(30.dp))
+                            .padding(horizontal = 16.dp, vertical = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        Text("${(index + 1).toString().padStart(2, '0')}   ${student.name}")
+                        Text(if (showPresent) "P" else "A", fontWeight = FontWeight.Bold)
+                    }
+                }
+            } else {
                 Spacer(modifier = Modifier.height(32.dp))
-                Text("No students found", color = Color.Gray, modifier = Modifier.align(Alignment.CenterHorizontally))
+                Text(
+                    "No students found",
+                    color = Color.Gray,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
+                )
             }
         }
     }

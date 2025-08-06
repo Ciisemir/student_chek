@@ -147,8 +147,8 @@ fun HomeScreen(
                         },
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(vertical = 4.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFA6))
+                            .padding(start = 100.dp, end = 100.dp),
+                        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF049696))
                     ) {
                         Text(batch.name, color = Color.White)
                     }
@@ -161,7 +161,7 @@ fun HomeScreen(
             onClick = {
                 navController.navigate("add_batch")
             },
-            containerColor = Color(0xFF00BFA6),
+            containerColor = Color(0xFF1BB6B6),
             modifier = Modifier
                 .align(Alignment.BottomCenter)
                 .padding(bottom = 24.dp)

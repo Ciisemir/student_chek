@@ -29,7 +29,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
+import androidx.compose.foundation.Image
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
+import androidx.compose.ui.layout.ContentScale
 
+import androidx.compose.ui.res.painterResource
+
+import java.util.*
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -46,28 +55,45 @@ fun AttendanceSummaryGraph(
     val pieColors = listOf(Color(0xFF66BB6A), Color(0xFFE57373)) // green & red
     val values = listOf(presentCount.toFloat(), absentCount.toFloat())
 
-    Scaffold(
-        topBar = {
-            TopAppBar(
-                title = { Text("Attendance") },
-                navigationIcon = {
-                    IconButton(onClick = { navController.popBackStack() }) {
-                        Icon(Icons.Default.ArrowBack, contentDescription = "Back")
-                    }
-                }
-            )
-        }
-    ) { paddingValues ->
+    Box(modifier = Modifier.fillMaxSize()) {
+        // Background image
+        Image(
+            painter = painterResource(id = R.drawable.kor),
+            contentDescription = null,
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+
+        // Attendance image bottom-right
+        Image(
+            painter = painterResource(id = R.drawable.attendance),
+            contentDescription = null,
+            modifier = Modifier
+                .align(Alignment.BottomEnd)
+                .size(100.dp)
+        )
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(paddingValues)
-                .padding(24.dp),
+                .padding(top = 85.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.CenterVertically)
+            verticalArrangement = Arrangement.spacedBy(16.dp, Alignment.Top)
         ) {
+            // Date
             Text(date, fontWeight = FontWeight.Bold, fontSize = 18.sp)
 
+            // Attendance title
+            Text("Attendance", fontWeight = FontWeight.Bold, fontSize = 22.sp)
+
+            // Batch name
+            Text(
+                batchViewModel.batches.getOrNull(batchIndex)?.name ?: "N/A",
+                fontWeight = FontWeight.Bold,
+                fontSize = 18.sp
+            )
+
+            // Pie chart
             Canvas(modifier = Modifier.size(200.dp)) {
                 var startAngle = -90f
                 val totalSum = values.sum()
@@ -83,12 +109,14 @@ fun AttendanceSummaryGraph(
                 }
             }
 
+            // Percentage text
             Text(
-                text = String.format("%.1f%% Present", presentPercent),
-                fontSize = 18.sp,
+                text = String.format("%.0f %%", presentPercent),
+                fontSize = 20.sp,
                 fontWeight = FontWeight.SemiBold
             )
 
+            // Legend
             Row(
                 modifier = Modifier.padding(top = 12.dp),
                 horizontalArrangement = Arrangement.spacedBy(24.dp)
@@ -98,26 +126,42 @@ fun AttendanceSummaryGraph(
             }
 
             Spacer(modifier = Modifier.height(24.dp))
+// Common padding modifier
+            val buttonPadding = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 50.dp)
 
-            Button(
-                onClick = {
-                    navController.navigate("attendance_list_present/$batchIndex/$date")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFA6))
+// Wrapper for both buttons
+            Column(
+                modifier = Modifier.padding(top = 16.dp) // Optional spacing above the buttons
             ) {
-                Text("Present students", color = Color.White)
-            }
+                // Present students button
+                Button(
+                    onClick = {
+                        navController.navigate("attendance_list_present/$batchIndex/$date")
+                    },
+                    modifier = buttonPadding,
+                    shape = RoundedCornerShape(50),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF049696))
+                ) {
+                    Text("Present students", color = Color.White)
+                }
 
-            Button(
-                onClick = {
-                    navController.navigate("attendance_list_absent/$batchIndex/$date")
-                },
-                modifier = Modifier.fillMaxWidth(),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFA6))
-            ) {
-                Text("Absentees", color = Color.White)
+                Spacer(modifier = Modifier.height(12.dp)) // Space between buttons
+
+                // Absentees button
+                Button(
+                    onClick = {
+                        navController.navigate("attendance_list_absent/$batchIndex/$date")
+                    },
+                    modifier = buttonPadding,
+                    shape = RoundedCornerShape(50),
+                    colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF049696))
+                ) {
+                    Text("Absentees", color = Color.White)
+                }
             }
         }
     }
-}
+    }
+

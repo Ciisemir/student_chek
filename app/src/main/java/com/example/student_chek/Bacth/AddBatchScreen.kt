@@ -101,7 +101,7 @@ fun AddBatchScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFA6))
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1BB6B6))
             ) {
                 Text("Save")
             }

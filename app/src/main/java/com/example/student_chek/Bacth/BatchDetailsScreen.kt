@@ -86,7 +86,7 @@ fun BatchDetailsScreen(
                     Icon(
                         imageVector = Icons.Default.Edit,
                         contentDescription = "Edit",
-                        tint = Color(0xFF00BFA6)
+                        tint = Color(0xFF1BB6B6)
                     )
                 }
 
@@ -203,7 +203,7 @@ fun RoundedButton(text: String, onClick: () -> Unit) {
             .fillMaxWidth()
             .height(50.dp),
         shape = RoundedCornerShape(50),
-        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFA6))
+        colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1BB6B6))
     ) {
         Text(text, color = Color.White, fontWeight = FontWeight.Bold)
     }

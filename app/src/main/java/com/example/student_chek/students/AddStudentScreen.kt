@@ -32,20 +32,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavHostController
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
-
-import androidx.compose.material3.*
-import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
-
 import androidx.compose.ui.text.font.FontWeight
-
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 @Composable
 fun AddStudentScreen(
@@ -146,7 +135,7 @@ fun AddStudentScreen(
                     .fillMaxWidth()
                     .height(50.dp),
                 shape = RoundedCornerShape(50),
-                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF00BFA6)),
+                colors = ButtonDefaults.buttonColors(containerColor = Color(0xFF1BB6B6)),
                 enabled = name.isNotBlank() && mobile.isNotBlank()
             ) {
                 Text("Save", color = Color.White, fontWeight = FontWeight.Bold)
@@ -160,7 +149,7 @@ fun AddStudentScreen(
             modifier = Modifier
                 .align(Alignment.BottomEnd)
                 .size(100.dp)
-                .padding(8.dp)
+
         )
     }
 }

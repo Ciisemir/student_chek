@@ -11,6 +11,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -55,7 +56,18 @@ fun EditStudentScreen(
                 .padding(24.dp),
             verticalArrangement = Arrangement.spacedBy(12.dp)
         ) {
-            Text("Batch name: ${batchViewModel.batches.getOrNull(batchIndex)?.name ?: "Unknown"}")
+            // Batch name as read-only field
+            OutlinedTextField(
+                value = batchViewModel.batches.getOrNull(batchIndex)?.name ?: "Unknown",
+                onValueChange = {},
+                label = { Text("Batch name") },
+                readOnly = true,
+                modifier = Modifier.fillMaxWidth(),
+                colors = OutlinedTextFieldDefaults.colors(
+                    unfocusedContainerColor = Color(0xFFF2F2F2),
+                    focusedContainerColor = Color(0xFFF2F2F2)
+                )
+            )
 
             OutlinedTextField(value = name, onValueChange = { name = it }, label = { Text("Name") }, modifier = Modifier.fillMaxWidth())
             OutlinedTextField(value = domain, onValueChange = { domain = it }, label = { Text("Domain") }, modifier = Modifier.fillMaxWidth())

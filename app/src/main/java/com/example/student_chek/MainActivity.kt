@@ -20,8 +20,12 @@ data class Student(
     val domain: String,
     val mobile: String,
     val gender: String,
-    val email: String
+    val email: String,
+    val batchName: String? = null  // Haddii loo baahdo
 )
+
+
+
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
